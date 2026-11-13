@@ -1,0 +1,6 @@
+"Factor","Prev_present","Prev_absent","Diff_pp","OR","OR_lo","OR_hi","p_value","p_bonferroni"
+"HighBP",28.1,8.3,19.8,4.31,4.21,4.42,0,0
+"HighChol",26,10.4,15.6,3.02,2.95,3.09,0,0
+"PhysActivity",15,23.7,-8.8,0.57,0.55,0.58,0,0
+"Smoker",19.2,15.7,3.5,1.28,1.25,1.31,5.83999305901454e-109,2.91999652950727e-108
+"HeartDiseaseorAttack",35.9,15.1,20.8,3.14,3.05,3.23,0,0

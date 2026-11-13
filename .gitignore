@@ -1,0 +1,16 @@
+# R / RStudio
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Local source data (do not commit survey microdata by default)
+data/*.csv
+
+# Generated analysis outputs; selectively commit curated figures/tables instead
+results/diabetes_outputs/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
