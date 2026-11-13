@@ -1,150 +1,132 @@
 # Diabetes Risk Factor Analysis and Predictive Modelling
 
-**IT3081 – Statistical Modelling | Group Assignment**  
-**Group:** DS-WE-02-G42  
-**Dataset:** Behavioral Risk Factor Surveillance System (BRFSS), 2015  
-**Project type:** Collaborative academic project
+**IT3081 – Statistical Modelling | Group Assignment**
+**Group:** DS-WE-02-G42
+**Dataset:** Behavioral Risk Factor Surveillance System (BRFSS), 2015
 
 ## Project Overview
 
-This project investigates health and lifestyle indicators associated with diabetes status using the 2015 BRFSS health-indicator dataset. It applies descriptive statistics, statistical inference and predictive statistical modelling in R, then evaluates multivariate and Bayesian approaches to support evidence-informed healthcare decision-making.
+This project investigates health and lifestyle indicators associated with diabetes status using the 2015 BRFSS health-indicator dataset. It applies descriptive statistics, statistical inference and predictive modelling in R, and evaluates PCA, Bayesian methods and experimental-design concepts to support evidence-informed healthcare decision-making.
 
-The work was completed as a group assignment. My estimated individual contribution was approximately **75% of the overall project work**; the specific areas I contributed to are listed in [CONTRIBUTIONS.md](CONTRIBUTIONS.md).
+This was a group assignment. I was responsible for the R analysis workflow in this repository, including data cleaning, statistical inference, predictive modelling, PCA, Bayesian methods and the risk-score prototype. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for details.
 
-> **Scope note:** This repository contains the R analysis workflow and supporting project documentation. It is not a substitute for the full consultancy report, presentation or viva deliverables required by the university assignment.
+> **Scope note:** This repository contains the R analysis workflow and supporting documentation. It is not a substitute for the full consultancy report, presentation or viva deliverables required by the assignment.
 
 ## Problem Context
 
-Diabetes creates a significant public-health and healthcare-planning challenge. Understanding how demographic, behavioural and health-related indicators relate to diabetes status can help healthcare stakeholders identify patterns, prioritize prevention initiatives and explore risk-screening approaches.
+Diabetes is a major public-health and healthcare-planning challenge. Understanding how demographic, behavioural and health indicators relate to diabetes status can help stakeholders identify patterns, prioritise prevention and explore risk-screening approaches.
 
-The analysis uses BRFSS 2015 survey indicators. It is observational and cross-sectional; results should be interpreted as associations and model-based estimates, not causal effects or clinical diagnoses.
+The data are observational and cross-sectional. Results should be read as associations and model-based estimates, **not** causal effects or clinical diagnoses.
 
 ## Project Objectives
 
 - Understand the dataset, its variables and data-quality characteristics.
-- Describe diabetes status and relevant demographic, behavioural and health indicators.
-- Apply appropriate statistical tests and interpret effect sizes alongside statistical significance.
+- Describe diabetes status and key demographic, behavioural and health indicators.
+- Apply appropriate statistical tests and interpret effect sizes alongside p-values.
 - Develop and compare predictive classification models.
 - Evaluate model assumptions and predictive performance.
-- Assess the usefulness and limitations of PCA and Bayesian methods for this problem.
-- Translate statistical analysis into considerations for healthcare decision-making.
+- Assess the usefulness and limitations of PCA and Bayesian methods.
+- Prototype a risk-scoring framework and discuss its use in healthcare decision-making.
 
 ## Dataset
 
-The R script expects the following file:
+The script expects the file:
 
-```text
+```
 data/diabetes_012_health_indicators_BRFSS2015.csv
 ```
 
-The dataset file is **not included** in this repository. Please obtain it from the same public source used by the project team and review `data/README.md` for placement and citation instructions. The uploaded assignment brief requires datasets to be publicly accessible and properly referenced. The exact download URL/version used by the group was not included in the supplied R script or assignment PDF, so it should be added before publishing this repository.
+The CSV is **not included** in this repository because of its size. Download it from Kaggle (Diabetes Health Indicators Dataset)(https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset) and place it in the `data/` folder. See [data/README.md](data/README.md).
 
-The script works with the `Diabetes_012` outcome and 21 predictor variables. For the main binary classification workflow, it recodes the outcome as:
+The dataset contains the outcome `Diabetes_012` (0 = no diabetes, 1 = prediabetes, 2 = diabetes) and 21 predictor variables.
 
-- `No`: no diabetes (`Diabetes_012 == 0`)
-- `Yes`: pre-diabetes or diabetes (`Diabetes_012` equal to 1 or 2)
-
-It also retains a three-class outcome (`None`, `Prediabetes`, `Diabetes`) for an additional multinomial modelling extension. Review this outcome grouping carefully when interpreting results.
+- **Primary binary target:** `No` = no diabetes; `Yes` = prediabetes or diabetes (early-detection objective).
+- **Strict target (sensitivity analysis):** `Yes` = diabetes only.
+- A three-level status variable is also kept for descriptive analysis.
 
 ## Methods and Assignment Coverage
 
-The supplied R script implements the following analytical components:
+| Task | Coverage | Main methods |
+|------|----------|--------------|
+| 3 – Dataset understanding and descriptive analysis | Implemented in R | Data dictionary, missing values, range checks, duplicate removal, class balance, IQR outlier detection, descriptive statistics, visualisations |
+| 4 – Statistical inference | Implemented in R | Welch t-test, Wilcoxon rank-sum, F-test, Levene's test, one-way ANOVA with Tukey HSD, Welch ANOVA, Kruskal–Wallis, proportion tests with odds ratios (Bonferroni-adjusted), chi-square test |
+| 5 – Predictive modelling | Implemented in R | Stratified 70/30 split, logistic regression, VIF, odds ratios with 95% CI, forward/backward stepwise selection, LASSO / Ridge / Elastic Net, ROC/AUC, Youden threshold, cross-validation, strict-target sensitivity analysis |
+| 6 – Experimental design | Illustrative demos in R | CRD vs RCBD comparison, sample-size calculation, simulated trial power |
+| 7 – PCA | Implemented in R | PCA on 7 numeric/ordinal variables, scree plot, biplot, Kaiser rule, PCA vs original-variable model comparison |
+| 8 – Bayesian methods | Implemented in R | Naive Bayes, Bayesian logistic regression (`bayesglm`), Beta-Binomial posterior prevalence, cost-based decision threshold |
+| 9 – Time series | Simulated illustration only | Decomposition and ARIMA workflow on **simulated** data. This is not real BRFSS time-series evidence. |
+| 10 – Innovation prototype | Implemented in R | Early-warning risk score with Low / Moderate / High tiers |
+| 1, 2, 11, 12 | Not covered by the script | Industry context, literature review, expert validation and final recommendations are in the separate consultancy deliverables. |
 
-| Assignment task | Coverage in this repository | Main methods / content |
-|---|---|---|
-| Task 3 – Dataset understanding and descriptive analysis | Implemented in R | Variable dictionary, missing-value checks, range checks, duplicate assessment, descriptive statistics, prevalence summaries and visualizations |
-| Task 4 – Statistical inference | Implemented in R | Welch t-tests, Wilcoxon rank-sum test, variance tests, Levene's test, ANOVA, Welch ANOVA, Kruskal–Wallis, proportion test, chi-square tests and effect sizes |
-| Task 5 – Predictive statistical modelling | Implemented in R | Logistic regression, LASSO, Ridge, Elastic Net, stepwise selection, cross-validation, ROC/AUC, threshold selection, calibration and classification metrics |
-| Task 7 – PCA evaluation | Implemented in R | PCA on selected continuous/ordinal variables and all predictors; principal-component regression comparison |
-| Task 8 – Bayesian methods | Implemented in R | Naïve Bayes, Bayesian logistic regression / posterior simulation and Bayesian decision analysis; optional Stan workflow is disabled by default |
-| Task 9 – Time series | Optional simulated illustration only | The script demonstrates a simulated ARIMA workflow. This is not real BRFSS time-series evidence. The assignment asks for a critical discussion, not an actual time-series analysis. |
-| Tasks 1, 2, 6, 10, 11 and 12 | Not evidenced by the R script | These require written industry context, literature review, experimental-design discussion, innovation proposal, expert validation and final recommendations in the separate consultancy deliverables. |
+## Key Analytical Decisions
 
-The assignment brief requires a literature review of at least 15 peer-reviewed papers, including at least 10 journal papers and at least 5 papers from the last five years. It also requires at least one relevant industry expert consultation. Those requirements cannot be demonstrated by the R script alone.
-
-## Key Analytical Design Decisions
-
-The script documents several decisions that should be understood and defended during the viva:
-
-1. Duplicate rows are retained in the primary analysis, with a duplicate-removed sensitivity analysis included.
-2. The primary binary outcome combines pre-diabetes and diabetes into one positive class.
-3. The train/test split is stratified (70/30) with a fixed seed.
-4. The classification threshold is selected using training data rather than the test set.
-5. `GenHlth` is represented as an unordered factor in the regression models, while `Age`, `Education` and `Income` are treated as numeric scores.
-
-These are analytical choices, not universal rules; their suitability and limitations should be explained in the report.
+- Exact duplicate rows are **removed** (the count and percentage are reported first).
+- Prediabetes and diabetes are combined into one positive class for the primary analysis; a diabetes-only target is used as a sensitivity check.
+- The train/test split is stratified (70/30) with a fixed seed.
+- The classification threshold is chosen on the **training** data, not the test set.
+- `GenHlth` is an unordered factor in the regression models; `Age`, `Education` and `Income` are treated as numeric scores.
+- High BMI values are extreme but plausible, so they are retained and robust tests are used alongside parametric ones.
 
 ## Tools and R Packages
 
-- R
-- `car`
-- `corrplot`
-- `pROC`
-- `glmnet`
-- `e1071`
-- `arm`
-- `factoextra`
-- `forecast`
+R, `car`, `glmnet`, `pROC`, `e1071`, `corrplot`, `forecast`, `arm`
 
-The script checks for the listed packages and installs missing ones when run. The optional Stan model requires `rstanarm`, which is not enabled by default.
+Missing packages are installed automatically on the first run.
 
 ## Repository Structure
 
-```text
-diabetes-risk-factor-analysis/
+```
+.
+├── diabetes_risk_analysis.R    # Main analysis script
 ├── README.md
 ├── CONTRIBUTIONS.md
-├── diabetes_risk_analysis.R
 ├── .gitignore
 ├── data/
-│   └── README.md
+│   └── README.md               # Dataset download instructions
+├── figures/                    # Generated plots (PNG)
+├── tables/                     # Generated tables (CSV)
 └── results/
-    ├── figures/          # Place selected, reviewed figures here
-    └── tables/           # Place selected, reviewed tables here
 ```
-
-Generated analysis files are written to `results/diabetes_outputs/` when the script runs. Generated outputs and the source dataset are excluded from Git by default; selectively add small, useful and reviewed figures/tables if you want to showcase them.
 
 ## How to Run
 
-1. Install [R](https://www.r-project.org/) (RStudio is optional but recommended).
-2. Obtain the dataset and place the CSV at the path shown in the Dataset section.
-3. Clone or download this repository.
-4. Open the project folder as the working directory in RStudio, or navigate to the folder in a terminal.
-5. Run the script:
+1. Install R (RStudio recommended).
+2. Clone or download this repository.
+3. Download the dataset and place it at `data/diabetes_012_health_indicators_BRFSS2015.csv`.
+4. In RStudio, set the working directory: *Session > Set Working Directory > To Source File Location*.
+5. Run the **whole script** from top to bottom (`Ctrl + Alt + R`), or from a terminal:
+   ```bash
+   Rscript diabetes_risk_analysis.R
+   ```
 
-```r
-source("diabetes_risk_analysis.R")
-```
-
-Alternatively, from a terminal:
-
-```bash
-Rscript diabetes_risk_analysis.R
-```
-
-The script stops with a clear error if the dataset is not found. The stepwise-selection section may take additional time. To skip it, change `RUN_STEPWISE <- TRUE` to `FALSE` near the top of the script. The optional Stan model is disabled by default (`RUN_STAN <- FALSE`).
+The stepwise-selection and cross-validation sections may take a few minutes.
 
 ## Outputs
 
-The script saves figures, CSV tables and session information under `results/diabetes_outputs/`. Output names include descriptive-analysis figures, statistical-test tables, model-comparison tables, PCA plots, Bayesian decision plots and simulated time-series illustrations.
+| Output | Location |
+|--------|----------|
+| Figures (PNG) | `figures/` |
+| Tables (CSV) | `tables/` |
+| Cleaned dataset | `diabetes_cleaned.csv` (not tracked in Git) |
 
-No numerical performance results are hard-coded in this README. Run the analysis and report the values actually produced by the current dataset and software environment. Do not describe the simulated time-series output as an observed healthcare trend.
+No performance numbers are hard-coded in this README. Run the script to obtain the values produced by your own environment.
 
 ## Limitations and Responsible Interpretation
 
-- BRFSS 2015 is cross-sectional survey data; it does not establish temporal order or causality.
-- The binary target combines pre-diabetes and diabetes, which simplifies the classification task and loses the distinction between those groups.
-- Survey-derived indicators and self-reported measures may contain reporting and measurement limitations.
-- Class imbalance makes accuracy alone an insufficient performance measure; sensitivity, specificity, precision, F1, balanced accuracy and AUC should be considered together.
-- A predictive model trained on this dataset is an analytical research exercise, not a clinically validated diagnostic tool.
-- The simulated Task 9 workflow is illustrative only. Real forecasting would require genuine repeated observations over time.
-- The assignment's literature review, expert validation, innovation proposal and management recommendations must be supported by the group's separate evidence and report.
+- BRFSS 2015 is cross-sectional survey data: it shows association, **not causation**.
+- Survey weights were not applied, which may affect independence assumptions.
+- Self-reported indicators may contain reporting and measurement bias.
+- The binary target merges prediabetes and diabetes, losing the distinction between them.
+- Class imbalance makes accuracy alone misleading, so sensitivity, specificity and AUC are reported together.
+- The model is an analytical exercise, **not** a clinically validated diagnostic tool.
+- Task 6 and Task 9 use simulated data for illustration only.
 
 ## Academic Integrity and Acknowledgements
 
-This is a collaborative university assignment. Dataset providers, research papers, software packages and any tools used in preparing the project should be acknowledged in the final academic submission and in this repository where applicable. Add the exact dataset citation and the group's research references before making the repository public. Any use of generative AI should be disclosed in accordance with the university's academic-integrity guidance.
+This project was completed as part of a university group assignment. Dataset: CDC BRFSS 2015. Any use of generative AI tools should be disclosed in line with the university's academic-integrity guidance.
 
-## Author / Contribution
+## Author
 
-See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for a transparent summary of the individual work claimed within this group project. The approximate contribution percentage is self-reported and should be retained only if it accurately reflects the group's agreed contribution record.
+Parindi Kodithuwakku  – [GitHub](https://github.com/parindi2003) | 
+
+See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for the work I carried out in this project.
